@@ -36,8 +36,4 @@ $config = array(
 
 Gateway::setConfig($config);
 
-// Start with payment 'auth'
-
-$gatewayAuth = Gateway::newInstance();
-
 ```
