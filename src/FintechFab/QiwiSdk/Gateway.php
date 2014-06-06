@@ -24,7 +24,7 @@ class Gateway
 	const C_BILL_ALREADY_EXIST = '215';
 	const C_SMALL_AMOUNT = '241';
 	const C_BIG_AMOUNT = '242';
-	const C_TECHNICAL_ERROR = '242';
+	const C_TECHNICAL_ERROR = '300';
 
 	private static $config;
 
@@ -170,6 +170,7 @@ class Gateway
 			'prv_name' => self::getConfig('provider.name'),
 		);
 		$oResponse = $this->curl->request($orderId, 'PUT', $bill);
+
 		$this->parseError($oResponse);
 
 		return $this->getError()
@@ -342,7 +343,7 @@ class Gateway
 		$params['user'] = str_replace('tel:', '', $params['user']);
 
 		// статус
-		$this->setValueBillStatus($params['status']);
+		$this->setValueBillStatus($this->statusMap[$params['status']]);
 
 		// данные
 		$this->setCallbackAmount($params['amount']);
