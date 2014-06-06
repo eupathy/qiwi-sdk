@@ -303,6 +303,12 @@ class Gateway
 	 */
 	public function doParseCallback($requestParams = null)
 	{
+		if (!$this->checkAuth()) {
+			$this->setError($this->errorMap[self::C_AUTH_ERROR]);
+			$this->createCallbackResponse(self::C_AUTH_ERROR);
+
+			return false;
+		}
 
 		if (null === $requestParams && !empty($_POST)) {
 			$requestParams = $_POST;
@@ -435,6 +441,42 @@ class Gateway
 		if ($sum <= 0) {
 			$this->setError($this->errorMap[self::C_SMALL_AMOUNT]);
 		}
+	}
+
+	private function checkAuth()
+	{
+		$isSuccess = false;
+
+		$providerData = $this->getProviderForAuth();
+
+		if ($providerData) {
+
+			if (self::getConfig('provider.id') == $providerData['login']
+				&& self::getConfig('provider.password') == $providerData['password']
+			) {
+				$isSuccess = true;
+			}
+		}
+
+		return $isSuccess;
+	}
+
+	private function getProviderForAuth()
+	{
+		$authBasicHeader = trim($_SERVER['HTTP_AUTHORIZATION']);
+		if ($authBasicHeader) {
+
+			preg_match('/^Basic (.+)$/', $authBasicHeader, $matches);
+			@list($login, $password) = explode(':', base64_decode($matches[1]));
+			$providerData = array(
+				'login'    => $login,
+				'password' => $password,
+			);
+
+			return $providerData;
+		}
+
+		return null;
 	}
 
 	/**
