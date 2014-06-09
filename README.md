@@ -1,14 +1,14 @@
 Qiwi PHP SDK
 ===============
 
-PHP SDK for Visa Qiwi Wallet (REST Protocol)
+PHP SDK для работы с сервером QIWI через REST протокол
 
-# Requirements
+# Требования
 
 - php >=5.3.0
 - php5-curl
 
-# Installation
+# Установка
 
 ## Composer
 
@@ -18,7 +18,7 @@ PHP SDK for Visa Qiwi Wallet (REST Protocol)
         },
     }
 
-# Simple usage
+# Использование
 
 ```PHP
 
