@@ -2,6 +2,11 @@ Qiwi PHP SDK
 ===============
 
 PHP SDK для работы с сервером QIWI через REST протокол
+Используйте этот пакет чтобы обращаться к серверу QIWI.
+Протестировать работу можно с пакетами эмуляции сервера QIWI и интернет магазина:
+
+- QIWI-gate: https://github.com/fintech-fab/qiwi-gate
+- QIWI-shop: https://github.com/fintech-fab/qiwi-shop
 
 # Требования
 
