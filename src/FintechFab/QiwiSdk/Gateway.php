@@ -443,9 +443,18 @@ class Gateway
 		}
 	}
 
+	/**
+	 * Проверка авторизации
+	 *
+	 * @return bool
+	 */
 	private function checkAuth()
 	{
-		$isSuccess = false;
+		$sign = $this->getSignForAuth();
+
+		if ($sign != '') {
+			return $this->isCorrectSign($sign);
+		}
 
 		$providerData = $this->getProviderForAuth();
 
@@ -454,13 +463,17 @@ class Gateway
 			if (self::getConfig('provider.id') == $providerData['login']
 				&& self::getConfig('provider.password') == $providerData['password']
 			) {
-				$isSuccess = true;
+				return true;
 			}
 		}
 
-		return $isSuccess;
+		return false;
 	}
 
+	/**
+	 * Получить логин:пароль из заголовка callback`а
+	 * @return array|null
+	 */
 	private function getProviderForAuth()
 	{
 		$authBasicHeader = trim($_SERVER['HTTP_AUTHORIZATION']);
@@ -477,6 +490,37 @@ class Gateway
 		}
 
 		return null;
+	}
+
+	/**
+	 * Получить подпись из заголовка callback`а
+	 *
+	 * @return string
+	 */
+	private function getSignForAuth()
+	{
+		$signHeader = trim($_SERVER['HTTP_X_API_SIGNATURE']);
+
+		return $signHeader;
+	}
+
+	/**
+	 * Проверка подписи из callback`а
+	 *
+	 * @param string $sign
+	 *
+	 * @return bool
+	 */
+	private function isCorrectSign($sign)
+	{
+		$signData = $_POST['amount'] . '|' . $_POST['bill_id'] . '|' . $_POST['ccy'] . '|' . $_POST['command']
+			. '|' . $_POST['comment'] . '|' . $_POST['error'] . '|' . $_POST['prv_name']
+			. '|' . $_POST['status'] . '|' . $_POST['user'];
+		$key = self::getConfig('provider.key');
+		$localSign = base64_encode(hash_hmac('sha1', $signData, $key));
+
+		return $sign == $localSign;
+
 	}
 
 	/**
