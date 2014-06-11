@@ -34,8 +34,9 @@ use FintechFab\QiwiSdk\Gateway;
 $config = array(
 	'gateUrl'  => 'url-to-qiwi-gate',
     'provider' => array(
-	        'id'       => 'your-qiwi-gate-id',
-	        'password' => 'your-qiwi-gate-password',
+	        'id'       => 'your-qiwi-gate-id',          //логин в системе QIWI
+	        'password' => 'your-qiwi-gate-password',    //пароль в системе QIWI
+	        'key'      => 'your-qiwi-gate-key',         //ключ для подписи в QIWI
 	    ),
 );
 
