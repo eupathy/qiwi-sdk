@@ -452,7 +452,7 @@ class Gateway
 	{
 		$sign = $this->getSignForAuth();
 
-		if ($sign != '') {
+		if ($sign != '' && $sign != null) {
 			return $this->isCorrectSign($sign);
 		}
 
@@ -472,12 +472,13 @@ class Gateway
 
 	/**
 	 * Получить логин:пароль из заголовка callback`а
+	 *
 	 * @return array|null
 	 */
 	private function getProviderForAuth()
 	{
-		$authBasicHeader = trim($_SERVER['HTTP_AUTHORIZATION']);
-		if ($authBasicHeader) {
+		if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+			$authBasicHeader = trim($_SERVER['HTTP_AUTHORIZATION']);
 
 			preg_match('/^Basic (.+)$/', $authBasicHeader, $matches);
 			@list($login, $password) = explode(':', base64_decode($matches[1]));
@@ -499,9 +500,13 @@ class Gateway
 	 */
 	private function getSignForAuth()
 	{
-		$signHeader = trim($_SERVER['HTTP_X_API_SIGNATURE']);
+		if (isset($_SERVER['HTTP_X_API_SIGNATURE'])) {
+			$signHeader = trim($_SERVER['HTTP_X_API_SIGNATURE']);
 
-		return $signHeader;
+			return $signHeader;
+		}
+
+		return null;
 	}
 
 	/**
