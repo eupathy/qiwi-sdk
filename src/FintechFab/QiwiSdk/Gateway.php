@@ -556,7 +556,7 @@ class Gateway
 	public function doCallbackResponse($endApp = true)
 	{
 
-		header('Content-type: text/xml');
+		@header('Content-type: text/xml');
 		echo $this->getCallbackResponse();
 		if ($endApp) {
 			die();
