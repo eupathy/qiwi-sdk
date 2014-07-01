@@ -303,12 +303,6 @@ class Gateway
 	 */
 	public function doParseCallback($requestParams = null)
 	{
-		if (!$this->checkAuth()) {
-			$this->setError($this->errorMap[self::C_AUTH_ERROR]);
-			$this->createCallbackResponse(self::C_AUTH_ERROR);
-
-			return false;
-		}
 
 		if (null === $requestParams && !empty($_POST)) {
 			$requestParams = $_POST;
@@ -341,6 +335,12 @@ class Gateway
 
 		if ($this->getError()) {
 			$this->createCallbackResponse(self::C_ERROR_FORMAT);
+
+			return false;
+		}
+		if (!$this->checkAuth($requestParams)) {
+			$this->setError($this->errorMap[self::C_AUTH_ERROR]);
+			$this->createCallbackResponse(self::C_AUTH_ERROR);
 
 			return false;
 		}
@@ -446,14 +446,16 @@ class Gateway
 	/**
 	 * Проверка авторизации
 	 *
+	 * @param $requestParams
+	 *
 	 * @return bool
 	 */
-	private function checkAuth()
+	private function checkAuth($requestParams)
 	{
 		$sign = $this->getSignForAuth();
 
 		if ($sign != '' && $sign != null) {
-			return $this->isCorrectSign($sign);
+			return $this->isCorrectSign($sign, $requestParams);
 		}
 
 		$providerData = $this->getProviderForAuth();
@@ -513,14 +515,14 @@ class Gateway
 	 * Проверка подписи из callback`а
 	 *
 	 * @param string $sign
+	 * @param array  $requestParams
 	 *
 	 * @return bool
 	 */
-	private function isCorrectSign($sign)
+	private function isCorrectSign($sign, $requestParams)
 	{
-		$signData = $_POST['amount'] . '|' . $_POST['bill_id'] . '|' . $_POST['ccy'] . '|' . $_POST['command']
-			. '|' . $_POST['comment'] . '|' . $_POST['error'] . '|' . $_POST['prv_name']
-			. '|' . $_POST['status'] . '|' . $_POST['user'];
+		ksort($requestParams);
+		$signData = implode('|', $requestParams);
 		$key = self::getConfig('provider.key');
 		$localSign = base64_encode(hash_hmac('sha1', $signData, $key));
 
@@ -559,7 +561,7 @@ class Gateway
 		@header('Content-type: text/xml');
 		echo $this->getCallbackResponse();
 		if ($endApp) {
-			die();
+			//die();
 		}
 
 	}
