@@ -551,18 +551,16 @@ class Gateway
 	}
 
 	/**
-	 * ответить на вызов коллбэка и завершить выполнение скрипта
+	 * ответить на вызов коллбэка
 	 *
-	 * @param bool $endApp завершить выполнение скрипта?
+	 * @return string
 	 */
-	public function doCallbackResponse($endApp = true)
+	public function doCallbackResponse()
 	{
 
 		@header('Content-type: text/xml');
-		echo $this->getCallbackResponse();
-		if ($endApp) {
-			//die();
-		}
+
+		return $this->getCallbackResponse();
 
 	}
 
