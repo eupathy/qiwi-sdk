@@ -7,21 +7,21 @@
 	"homepage": "https://github.com/fintech-fab/qiwi-sdk",
 	"version": "0.1",
 	"authors": [
-        {
-            "name": "Sergey Kozhuharov",
-            "email": "eupathy@gmail.com"
-        }
-    ],
-    "require": {
-        "php": ">=5.4.0"
-    },
+		{
+			"name": "Sergey Kozhuharov",
+			"email": "eupathy@gmail.com"
+		}
+	],
+	"require": {
+		"php": ">=5.4.0"
+	},
 	"require-dev": {
 		"mockery/mockery": "dev-master"
 	},
 	"autoload": {
-        "psr-0": {
-            "FintechFab\\QiwiSdk\\": "src/"
-        }
-    },
-    "minimum-stability": "dev"
+		"psr-0": {
+			"FintechFab\\QiwiSdk\\": "src/"
+		}
+	},
+	"minimum-stability": "dev"
 }

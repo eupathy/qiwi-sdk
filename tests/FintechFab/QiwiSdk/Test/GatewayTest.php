@@ -2,11 +2,11 @@
 
 namespace FintechFab\QiwiSdk\Test;
 
-use Mockery;
 use FintechFab\QiwiSdk\Curl;
 use FintechFab\QiwiSdk\Gateway;
+use Mockery;
 
-class ConnectorTest extends  \PHPUnit_Framework_TestCase
+class ConnectorTest extends \PHPUnit_Framework_TestCase
 {
 
 	/**
