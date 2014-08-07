@@ -102,6 +102,8 @@ class Gateway
 	 *      'provider' => array (
 	 *          'id'       => 'your-qiwi-account-id',
 	 *          'password' => 'your-qiwi-account-password',
+	 *          'name'     => 'your-company-name',
+	 *          'key'      => 'your-qiwi-account-key',
 	 *       )
 	 *  )
 	 *
