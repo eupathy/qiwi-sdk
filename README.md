@@ -45,4 +45,56 @@ $config = array(
 
 Gateway::setConfig($config);
 
+$curl = new Curl();
+
+// выставить счет
+$gate = new Gateway($curl);
+$billCreated = $gate->createBill(
+	1234,		// номер заказа (счета) в вашей системе
+	'+71234567890', // номер кошелька киви (моб. тел. плательщика)
+	123.45,		// сумма счета
+	'Комментарий!',	// комментрий к счету
+	60*60*24	// на сутки
+);
+
+// проверить статус по номеру заказа (счета)
+$gate = new Gateway($curl);
+$statusChecked = $gate->doRequestBillStatus(1234);
+if($statusChecked){
+	$status = $gate->getValueBillStatus();
+	switch($status){
+		case 'payable': // ожидает оплаты
+		case 'paid': // оплачен
+		case 'canceled': // отменен
+		case 'expired': // отменен, просрочен
+	}
+}
+
+
+// отменить счет по номеру заказа (счета)
+$gate = new Gateway($curl);
+$billCanceled = $gate->cancelBill(1234);
+
+
+// обработать callback от сервера
+$gate = new Gateway($curl);
+$correctCallback = $gate->doParseCallback();
+if($correctCallback){
+	$orderId = $gate->getCallbackOrderId();
+	$amount = $gate->getCallbackAmount();
+	$statusAfterCallback = $gate->getValueBillStatus();
+	switch($status){
+		case 'paid': // оплачен
+		case 'canceled': // отменен
+		case 'expired': // отменен, просрочен
+	}
+}
+
+// обработка ошибок
+$gate = new Gateway($curl);
+$billCreated = $gate->createBill(/*...*/);
+if(!$billCreated){
+	$errorMessage = $gate->getError();
+}
+
 ```
