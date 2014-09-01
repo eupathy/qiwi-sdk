@@ -481,6 +481,8 @@ class Gateway
 	 */
 	private function getProviderForAuth()
 	{
+		$providerData = null;
+
 		if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 			$authBasicHeader = trim($_SERVER['HTTP_AUTHORIZATION']);
 
@@ -490,11 +492,16 @@ class Gateway
 				'login'    => $login,
 				'password' => $password,
 			);
-
-			return $providerData;
 		}
 
-		return null;
+		if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])) {
+			$providerData = array(
+				'login'    => (int)trim($_SERVER['PHP_AUTH_USER']),
+				'password' => trim($_SERVER['PHP_AUTH_PW']),
+			);
+		}
+
+		return $providerData;
 	}
 
 	/**
