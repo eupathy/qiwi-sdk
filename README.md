@@ -83,7 +83,7 @@ if($correctCallback){
 	$orderId = $gate->getCallbackOrderId();
 	$amount = $gate->getCallbackAmount();
 	$statusAfterCallback = $gate->getValueBillStatus();
-	switch($status){
+	switch($statusAfterCallback){
 		case 'paid': // оплачен
 		case 'canceled': // отменен
 		case 'expired': // отменен, просрочен
