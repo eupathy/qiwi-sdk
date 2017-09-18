@@ -99,6 +99,7 @@ class Gateway
 	 * Установить конфиг перед использованием
 	 * $config format array(
 	 *      'gateUrl'  => 'url-to-qiwi-gate',
+	 *      'shopId'   => 'url-to-qiwi-shopid',
 	 *      'provider' => array (
 	 *          'id'       => 'your-qiwi-account-id',
 	 *          'password' => 'your-qiwi-account-password',
