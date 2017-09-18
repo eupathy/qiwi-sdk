@@ -160,16 +160,20 @@ class Gateway
 			return false;
 		}
 
-		$dateExpired = (null == $lifetime)
-			? null
-			: date('Y-m-d\TH:i:s', strtotime($lifetime));
+		if (null == $lifetime) {
+			$dateExpired = new \DateTime();
+			$dateExpired->add(new \DateInterval("P1D"));
+			$dateExpiredString = $dateExpired->format(\DateTime::ATOM);
+		} else {
+			$dateExpiredString = date('Y-m-d\TH:i:s', strtotime($lifetime));
+		}
 
 		$bill = array(
 			'user'     => 'tel:' . $tel,
 			'amount'   => $sum,
 			'ccy'      => 'RUB',
 			'comment'  => $comment,
-			'lifetime' => $dateExpired,
+			'lifetime' => $dateExpiredString,
 			'prv_name' => self::getConfig('provider.name'),
 		);
 		$oResponse = $this->curl->request($orderId, 'PUT', $bill);
