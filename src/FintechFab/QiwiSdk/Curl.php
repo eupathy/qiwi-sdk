@@ -18,7 +18,7 @@ class Curl
 	 */
 	private function  setUrl($orderId, $payReturnId = null)
 	{
-		$this->url = Gateway::getConfig('gateUrl') . Gateway::getConfig('provider.id')
+		$this->url = Gateway::getConfig('gateUrl') . Gateway::getConfig('shopId')
 			. '/bills/' . $orderId;
 		if ($payReturnId != null) {
 			$this->url .= '/refund/' . $payReturnId;
